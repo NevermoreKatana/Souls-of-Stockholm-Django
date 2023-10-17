@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    @media (max-width: 100%) {
+}
+    .navbar {
+        background-color: #272727;
+        border-radius: 6px;
+    }
+    .btn-primary{
+        background-color: #00ba78;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #00d88a;
+    }
+    .navbar-brand{
+        margin-left: 21%;
+    }
+    .d4 {background: #F15B42;
+    border-radius: 25px;
+    margin-right: 10px;}
+    .d4 form {
+      background: #F9F0DA;
+        border-radius: 25px;
+      border-bottom: 4px solid #be290e;
+
+    }
+    .d4 input, .d4 button {
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+    .d4 input {
+      width: 100%;
+      height: 42px;
+      padding-left: 15px;
+
+    }
+    .d4 button {
+      height: 42px;
+      width: 42px;
+      cursor: pointer;
+    }
+    .d4 button:before {
+      content: "\f178";
+      font-family: FontAwesome;
+      font-size: 20px;
+      color: #be290e;
+    }
+    .ml-right {
+    margin-left: auto;
+    margin-right: 470px;
+}
+    .mt-1{
+        margin-top: 1.5em;!important;
+    }
+</style>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/">Души стокгольма</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Форумы</a>
+                </li>
+                {% if cu %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile/{{ cu.id }}">Профиль</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Профиль</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/docs">Документация API</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-right">
+                <li class="nav-item">
+                    <div class="d4">
+                        <form action="/" method="post" style="display: flex;">
+                            <input type="text" id="query" name="query" placeholder="Искать здесь...">
+                            <button type="submit" ></button>
+                        </form>
+                    </div>
+                </li>
+                {% if cu %}
+                    <li class="nav-item mt-1 ">
+                        <form action="/logout" method="post" class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-light">Выйти</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item  mt-1">
+                        <form action="/login" method="get" class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Войти</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Зарегистрироваться</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "auromated-system"
+version = "0.1.0"
+description = "Souls of Stockholm is an anonymous forum where people can anonymously discuss all kinds of topics."
+authors = ["KatanaNevermore <grenkachannel@hotmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+  { include = "souls_of_stockholm" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.2.6"
+gunicorn = "^21.2.0"
+flake8 = "^4.0.1"
+python-dotenv = "^1.0.0"
+dj-database-url = "^2.1.0"
+psycopg2-binary = "^2.9.9"
+django-bootstrap5 = "^23.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
