@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+</head>
+{% include 'navigation.html' %}
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            {% if "error" in message.tags %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ message }}
+                </div>
+            {% elif "success" in message.tags %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
+                </div>
+        </ul>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 mt-5">
+                <h1 class="text-center">Авторизация</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Имя пользователя:</label>
+                        <input type="text" class="form-control" id="username" name="uname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль:</label>
+                        <input type="password" class="form-control" id="password" name="passwd" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

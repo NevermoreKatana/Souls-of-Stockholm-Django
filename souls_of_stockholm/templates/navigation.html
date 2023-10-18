@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    @media (max-width: 100%) {
+    @media (max-width: 767px) {
 }
     .navbar {
         background-color: #272727;
@@ -57,24 +57,19 @@
 </style>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="/">Души стокгольма</a>
+        <a class="navbar-brand" href="{% url 'main' %}">Души стокгольма</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Форумы</a>
+                    <a class="nav-link"  href="#">Форумы</a>
                 </li>
-                {% if cu %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile/{{ cu.id }}">Профиль</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Профиль</a>
-                    </li>
-                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% if is_session_active %}{% url 'profile' id=user_id %}{% else %} {% url 'login' %}{%endif%}">Профиль</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/docs">Документация API</a>
                 </li>
@@ -87,21 +82,22 @@
                             <button type="submit" ></button>
                         </form>
                     </div>
-                </li>
-                {% if cu %}
-                    <li class="nav-item mt-1 ">
-                        <form action="/logout" method="post" class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-light">Выйти</button>
+                    {% if is_session_active %}
+                     <li class="nav-item  mt-1">
+                        <form action="{% url 'logout' %}" method="post" class="d-flex justify-content-center">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Выйти</button>
                         </form>
                     </li>
                 {% else %}
+                </li>
                     <li class="nav-item  mt-1">
-                        <form action="/login" method="get" class="d-flex justify-content-center">
+                        <form action="{% url 'login' %}" method="get" class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary">Войти</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Зарегистрироваться</a>
+                        <a class="nav-link" href="{% url 'register' %}">Зарегистрироваться</a>
                     </li>
                 {% endif %}
             </ul>

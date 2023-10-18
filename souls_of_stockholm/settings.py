@@ -14,6 +14,8 @@ from pathlib import Path
 import dotenv
 import os
 import dj_database_url
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'souls_of_stockholm'
+    'souls_of_stockholm',
+    'souls_of_stockholm.user',
+    'souls_of_stockholm.posts',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +83,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'souls_of_stockholm.wsgi.application'
 
+
+#JWT token settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=36500),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=36500),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=36500),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_LAMBDA': lambda lifetime: lifetime - timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_LAMBDA': lambda lifetime: lifetime - timedelta(days=1),
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -118,7 +139,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+AUTH_USER_MODEL = 'user.CustomUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

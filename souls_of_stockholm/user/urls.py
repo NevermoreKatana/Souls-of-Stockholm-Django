@@ -1,5 +1,5 @@
 """
-URL configuration for souls_of_stockholm project.
+URL configuration for user project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,17 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from souls_of_stockholm import views
-
+from django.urls import path
+from souls_of_stockholm.user import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.IndexView.as_view(), name='main'),
-    path('user/', include('souls_of_stockholm.user.urls')),
-    path('login/', views.LoginView.as_view(), name='login'),
-    path('logout/', views.LogoutView.as_view(), name='logout'),
-    path('post/', include('souls_of_stockholm.posts.urls')),
-
-
-
+    path('register/', views.CreateUserView.as_view(), name='register'),
+    path('<int:id>/', views.UserView.as_view(), name='profile'),
 ]

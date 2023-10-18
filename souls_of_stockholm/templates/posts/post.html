@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пост</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/post.css' %}" rel="stylesheet" >
+</head>
+<body>
+{% include 'navigation.html' %}
+
+    <div class="container mt-4">
+        <h1>{{posts.name}}</h1>
+        <h6>
+            <a href="{% url 'profile' id=posts.user.id %}">{{posts.user.username}}</a>
+        </h6>
+        <pre>{{posts.content}}</pre>
+
+            <h2>Комментарии</h2>
+
+       <div class="mt-4">
+            <ul>
+                {% for c in comments %}
+                    <li class="li1">
+                        <img src="{% static 'images/main_bg.jpg' %}" alt="Фото пользователя">
+                        <div class="dv1">
+                            <strong>{{c.content}}</strong>
+                            <br>
+                            <a href="{% url 'profile' id=c.user.id %}">{{c.user.username}}</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <form method="post">
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="comment">Добавить комментарий:</label>
+                <textarea class="form-control txt1" id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Опубликовать комментарий</button>
+        </form>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
