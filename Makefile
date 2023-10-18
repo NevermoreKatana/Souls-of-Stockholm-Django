@@ -12,7 +12,7 @@ secretkey:
 
 start-production:
 	poetry run python manage.py migrate
-	poetry run gunicorn -b 0.0.0.0:8000 task_manager.wsgi:application
+	poetry run gunicorn -b 0.0.0.0:8000 souls_of_stockholm.wsgi:application
 
 make lint:
 	poetry run flake8 task_manager
