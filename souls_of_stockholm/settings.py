@@ -145,8 +145,8 @@ AUTH_USER_MODEL = 'user.CustomUser'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = 'souls_of_stockholm/static/'
+STATIC_ROOT = os.path.join('souls_of_stockholm', 'static')
 
 
 # Default primary key field type
