@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'souls_of_stockholm',
     'souls_of_stockholm.user',
     'souls_of_stockholm.posts',
+    'souls_of_stockholm.api',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -145,9 +146,10 @@ AUTH_USER_MODEL = 'user.CustomUser'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'souls_of_stockholm/static/'
-STATIC_ROOT = os.path.join('souls_of_stockholm', 'static')
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
