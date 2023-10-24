@@ -26,7 +26,7 @@ class LoginView(View):
         return render(request, 'login.html')
 
     def post(self, request, *args, **kwargs):
-        if services.login(request):
+        if services.login_user(request):
             return services.handle_success(request, 'Вы успешно залогинены', 'main')
         services.handle_error(request, 'Не правильный логин или пароль', 'login')
 
