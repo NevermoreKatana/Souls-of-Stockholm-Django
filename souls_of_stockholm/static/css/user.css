@@ -1,5 +1,5 @@
 body {
-    background-image: url(profile_bg.png);
+    background-image: url(../images/profile_bg.png);
     background-repeat: no-repeat;
    background-size: cover;
     background-color: #303030; /* Красный фон */
