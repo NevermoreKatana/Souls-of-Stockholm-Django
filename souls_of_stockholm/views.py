@@ -3,6 +3,8 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from souls_of_stockholm.posts.models import Posts
 from django.contrib import messages
+from django.db.models import Q
+
 
 class IndexView(View):
 
@@ -12,6 +14,13 @@ class IndexView(View):
         posts = Posts.objects.all()
         return render(request, 'index.html', {'is_session_active': is_session_active, 'posts': posts, 'user_id': user_id})
 
+    def post(self, request, *args, **kwargs):
+        is_session_active = 'user_id' in request.session
+        user_id = request.session.get('user_id')
+        query = request.POST.get('query')
+        posts = Posts.objects.filter(Q(name__startswith=query) | Q(content__startswith=query) | Q(content__endswith=query) | Q(name__endswith=query))
+        return render(request, 'index.html',
+                      {'is_session_active': is_session_active, 'posts': posts, 'user_id': user_id})
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
