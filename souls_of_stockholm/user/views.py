@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from souls_of_stockholm.user.validator import check_password, check_len_password
 from souls_of_stockholm.user.models import CustomUser
-from django.db import IntegrityError
-from django.contrib import messages
-from souls_of_stockholm.user.jwt import generate_tokens
 from souls_of_stockholm.user import services
 class UserView(View):
     def get(self, request, *args, **kwargs):
