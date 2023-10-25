@@ -20,4 +20,5 @@ from souls_of_stockholm.user import views
 urlpatterns = [
     path('register/', views.CreateUserView.as_view(), name='register'),
     path('<int:id>/', views.UserView.as_view(), name='profile'),
+    path('update/<int:id>/', views.UpdateUserView.as_view(), name='update_user')
 ]

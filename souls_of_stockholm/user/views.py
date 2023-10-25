@@ -3,7 +3,7 @@ from django.views import View
 from souls_of_stockholm.user.models import CustomUser
 from souls_of_stockholm.user import services
 from souls_of_stockholm.user.forms import RegistrationForm
-
+from django.contrib.auth import logout
 
 class UserView(View):
     def get(self, request, *args, **kwargs):
@@ -25,4 +25,22 @@ class CreateUserView(View):
     def post(self, request, *args, **kwargs):
         form = RegistrationForm(request.POST)
         errors = services.create_user(request, CustomUser, form)
+        return errors
+
+
+class UpdateUserView(View):
+
+    def get(self, request, *args, **kwargs):
+        is_session_active = 'user_id' in request.session
+        user_id = request.session.get('user_id')
+        initial_data = services.get_update_user_info(user_id)
+        form = RegistrationForm(initial_data)
+        return render(request, 'user/update.html', {'is_session_active': is_session_active, 'user_id': user_id, 'form': form})
+
+    def post(self, request, *args, **kwargs):
+        is_session_active = 'user_id' in request.session
+        user_id = request.session.get('user_id')
+        form = RegistrationForm(request.POST)
+        errors = services.update_user_info(form, request, user_id)
+        logout(request)
         return errors

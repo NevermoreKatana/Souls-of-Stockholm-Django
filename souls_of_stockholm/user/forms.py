@@ -25,7 +25,7 @@ class RegistrationForm(forms.Form):
         label_suffix='',
         max_length=150,
         widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Пароль',
+                                          'placeholder': 'Подтверждение пароля',
                                           'required': 'required'
                                           })
     )
@@ -33,7 +33,7 @@ class RegistrationForm(forms.Form):
         label='Возраст',
         label_suffix='',
         widget=forms.NumberInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Пароль',
+                                          'placeholder': 'Возраст',
                                           'required': 'required'
                                           })
     )
@@ -42,7 +42,6 @@ class RegistrationForm(forms.Form):
         label_suffix='',
         choices=(('male', "Мужской"), ('female', "Женский"), ('other', "Другой")),
         widget=forms.Select(attrs={'class': 'form-control',
-                                         'placeholder': 'Пароль',
                                          'required': 'required'
                                          })
         )
@@ -51,7 +50,7 @@ class RegistrationForm(forms.Form):
         label_suffix='',
         max_length=150,
         widget=forms.TextInput(attrs={'class': 'form-control',
-                                         'placeholder': 'Пароль',
+                                         'placeholder': 'Страна',
                                          'required': 'required'
                                          })
     )
