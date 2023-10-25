@@ -5,7 +5,7 @@ from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib import messages
 from souls_of_stockholm.posts import services
-
+from souls_of_stockholm.posts.models import Tag
 class PostView(View):
     def get(self, request, *args, **kwargs):
         post_id = kwargs.get('id')
@@ -26,14 +26,13 @@ class PostCreateView(View):
 
     def get(self, request, *args, **kwargs):
         is_session_active = 'user_id' in request.session
+        tags = Tag.objects.all()
         if not is_session_active:
             return handle_error(request, 'Чтобы создать пост пройдите аутентификацию', 'login')
         user_id = request.session.get('user_id')
-        return render(request, 'posts/create.html', {'is_session_active': is_session_active, 'user_id': user_id})
+        return render(request, 'posts/create.html', {'is_session_active': is_session_active, 'user_id': user_id, 'tags': tags})
 
     def post(self, request, *args, **kwargs):
-        post_name = request.POST.get('name')
-        content = request.POST.get('content')
-        return services.create_post(request, post_name, content)
+        return services.create_post(request)
 
 

@@ -17,7 +17,7 @@ def searching_form(request, model):
     query = request.POST.get('query')
     posts = model.objects.filter(
         Q(name__startswith=query) | Q(content__startswith=query) | Q(content__endswith=query) | Q(name__endswith=query))
-
+    return posts
 def login_user(request):
     username = request.POST.get('uname')
     password = request.POST.get('passwd')

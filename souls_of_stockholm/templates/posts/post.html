@@ -14,12 +14,22 @@
 
     <div class="container mt-4">
         <h1>{{posts.name}}</h1>
-        <h6>
-            <a href="{% url 'profile' id=posts.user.id %}">{{posts.user.username}}</a>
-        </h6>
         <pre>{{posts.content}}</pre>
+        <h4>
+            <strong class="">
+            <a href="{% url 'profile' id=posts.user.id %}">{{posts.user.username}}</a>
+            </strong>
+        </h4>
+        {%if posts.tag.all%}
+        <h3>Теги:</h3>
+        <h5>
+           {% for tag in posts.tag.all %}
+                {{ tag.name }}
+            {% endfor %}
+        </h5>
+        {%endif%}
+            <h2 class="mt-4">Комментарии</h2>
 
-            <h2>Комментарии</h2>
 
        <div class="mt-4">
             <ul>
