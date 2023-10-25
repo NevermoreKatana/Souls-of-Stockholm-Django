@@ -30,31 +30,28 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="username">Имя пользователя:</label>
-                        <input type="text" class="form-control" id="username" name="uname" required>
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
                     </div>
                     <div class="form-group">
-                        <label for="password">Пароль:</label>
-                        <input type="password" class="form-control" id="password" name="passwd" required>
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
                     </div>
                     <div class="form-group">
-                        <label for="confirm_password">Подтвердите пароль:</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_passwd" required>
+                        {{ form.confirm_password.label_tag }}
+                        {{ form.confirm_password }}
                     </div>
                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Age" required name="age">
+                        {{ form.age.label_tag }}
+                        {{ form.age }}
                     </div>
                     <div class="form-group">
-                        <label for="gender">Пол:</label>
-                        <select class="form-control" id="gender" name="gender" required>
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                            <option value="other">Другой</option>
-                        </select>
+                       {{ form.age.gender }}
+                        {{ form.gender }}
                     </div>
                     <div class="form-group">
-                        <label for="country">Страна:</label>
-                        <input type="text" class="form-control" id="country" name="country" required>
+                        {{ form.country.gender }}
+                        {{ form.country }}
                     </div>
                     <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                 </form>
