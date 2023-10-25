@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from souls_of_stockholm.posts.models import Posts
 from django.contrib import messages
 from souls_of_stockholm import services
-
+from souls_of_stockholm.forms import CustomUserForm
 
 class IndexView(View):
 
@@ -21,14 +21,17 @@ class IndexView(View):
         return render(request, 'index.html',
                       {'is_session_active': is_session_active, 'posts': posts, 'user_id': user_id})
 
+
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'login.html')
+        form = CustomUserForm()
+        return render(request, 'login.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        if services.login_user(request):
+        form = CustomUserForm(request.POST)
+        if services.login_user(request, form):
             return services.handle_success(request, 'Вы успешно залогинены', 'main')
-        services.handle_error(request, 'Не правильный логин или пароль', 'login')
+        return services.handle_error(request, 'Не правильный логин или пароль', 'login')
 
 
 class LogoutView(View):
