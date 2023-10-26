@@ -4,6 +4,9 @@ from django.db import IntegrityError
 from souls_of_stockholm.services import handle_error, handle_success
 from souls_of_stockholm.user.models import CustomUser
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import logout
+
+
 
 def check_errors(password1, password2, request):
     if not check_password(password1, password2):
@@ -21,7 +24,7 @@ def create_user(request, model, form):
     age = form.cleaned_data['age']
     gender = form.cleaned_data['gender']
     country = form.cleaned_data['country']
-    errors = check_errors(password1, password2, age, request)
+    errors = check_errors(password1, password2, request)
     if errors:
         return errors
     try:
@@ -68,6 +71,7 @@ def update_user_info(form, request, user_id):
     user.age = age
     user.country = country
     user.gender = gender
+    logout(request)
     try:
         user.save()
         return handle_success(request, 'Пользователь успешно обновлен', 'login')
@@ -75,6 +79,7 @@ def update_user_info(form, request, user_id):
         return handle_error(request, 'Данное имя занято другим пользователем', 'update_user')
 
 
-
-
-
+def check_user_perm(user_session_id, user_id):
+    if user_session_id is user_id:
+        return True
+    return False

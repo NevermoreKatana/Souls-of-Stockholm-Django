@@ -3,8 +3,8 @@ from django.views import View
 from souls_of_stockholm.user.models import CustomUser
 from souls_of_stockholm.user import services
 from souls_of_stockholm.user.forms import RegistrationForm
+from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib.auth import logout
-
 class UserView(View):
     def get(self, request, *args, **kwargs):
         is_session_active = 'user_id' in request.session
@@ -32,15 +32,36 @@ class UpdateUserView(View):
 
     def get(self, request, *args, **kwargs):
         is_session_active = 'user_id' in request.session
-        user_id = request.session.get('user_id')
-        initial_data = services.get_update_user_info(user_id)
-        form = RegistrationForm(initial_data)
-        return render(request, 'user/update.html', {'is_session_active': is_session_active, 'user_id': user_id, 'form': form})
-
+        user_session_id = request.session.get('user_id')
+        user_id = kwargs.get('id')
+        if services.check_user_perm(user_session_id, user_id):
+            initial_data = services.get_update_user_info(user_id)
+            form = RegistrationForm(initial_data)
+            return render(request, 'user/update.html', {'is_session_active': is_session_active, 'user_id': user_session_id, 'form': form})
+        return handle_error(request, 'У вас нет прав редактировать другого пользователя', 'main')
     def post(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
         user_id = request.session.get('user_id')
         form = RegistrationForm(request.POST)
         errors = services.update_user_info(form, request, user_id)
-        logout(request)
         return errors
+
+
+
+class DeleteUserView(View):
+
+    def get(self, request, *args, **kwargs):
+        is_session_active = 'user_id' in request.session
+        user_session_id = request.session.get('user_id')
+        user_id = kwargs.get('id')
+        user = CustomUser.objects.get(id=user_id)
+        if services.check_user_perm(user_session_id, user_id):
+            return render(request, 'user/delete.html',
+                          {'is_session_active': is_session_active, 'user_id': user_session_id, 'user': user})
+        return handle_error(request, 'У вас нет прав редактировать другого пользователя', 'main')
+
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get('id')
+        user = CustomUser.objects.get(id=user_id)
+        user.delete()
+        logout(request)
+        return handle_success(request, 'Пользователь успешно удален', 'main')

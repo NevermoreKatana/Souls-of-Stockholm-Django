@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+</head>
+{% include 'navigation.html' %}
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            {% if "error" in message.tags %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ message }}
+                </div>
+            {% elif "success" in message.tags %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
+                </div>
+        </ul>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    <div class="container px-5">
+        <h1 class="text-center">Удаление пользователя</h1>
+        <form method="post">
+            {% csrf_token %}
+           <h1>Вы уверены</h1>
+            <h2>Что хотите удалить пользователя {{user.username}}?</h2>
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+        <h6>Администрация не несет отвественности за ваш аккаунт, при будьте внимательны! При удалении аккаунта, восстановлению не подлежит</h6>
+    </div>
+
+</body>
+</html>

@@ -50,10 +50,15 @@
                             </tbody>
                         </table>
                         {% if user_id == user.id%}
+                        <div class="btn-group">
                         <form action="{% url 'update_user' id=user.id %}">
                              <button type="submit" class="btn btn-primary">Редактировать</button>
                         </form>
+                        <form action="{% url 'delete_user' id=user.id %}">
+                             <button type="submit" class="btn btn-danger mx-3">Удалить</button>
+                        </form>
                         {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
