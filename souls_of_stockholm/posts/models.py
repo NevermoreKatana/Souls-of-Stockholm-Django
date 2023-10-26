@@ -4,6 +4,8 @@ from souls_of_stockholm.user.models import CustomUser
 class Tag(models.Model):
     name = models.CharField(max_length=80)
 
+
+
 class Posts(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)

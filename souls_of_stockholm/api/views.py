@@ -1,7 +1,7 @@
 from rest_framework import generics
 from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.user.models import CustomUser
-from souls_of_stockholm.api.serializers import PostSerializer, UserSerializer, CommentSerializer, AnyUserSerializer
+from souls_of_stockholm.api.serializers import PostSerializer, UserSerializer, CommentSerializer, AnyUserSerializer, TagSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -38,9 +38,12 @@ class OnePostListView(generics.RetrieveAPIView):
         post_serializer = self.get_serializer(instance)
         comments = Comments.objects.filter(post=instance)
         comment_serializer = CommentSerializer(comments, many=True)
+        tags = instance.tag.all()
+        tag_serializer = TagSerializer(tags, many=True)
         response_data = {
             'post': post_serializer.data,
-            'comments': comment_serializer.data
+            'comments': comment_serializer.data,
+            'tags': tag_serializer.data
         }
         return Response(response_data)
 
