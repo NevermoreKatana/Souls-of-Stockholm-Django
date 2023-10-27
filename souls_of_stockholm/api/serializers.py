@@ -10,15 +10,30 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
     class Meta:
         model = Comments
-        fields = '__all__'
+        fields = ["id", "user", "content", "create_at"]
+
+    def get_user(self, obj):
+        user = obj.user
+        return {
+            'id': user.id,
+            'username': user.username
+        }
 
 class PostSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
     class Meta:
         model = Posts
         fields = ["id", "name", "content", "user"]
 
+    def get_user(self, obj):
+        user = obj.user
+        return {
+            'id': user.id,
+            'username': user.username
+        }
 
 
 class UserSerializer(serializers.ModelSerializer):

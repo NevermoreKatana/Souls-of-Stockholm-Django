@@ -40,6 +40,7 @@ class OnePostListView(generics.RetrieveAPIView):
         comment_serializer = CommentSerializer(comments, many=True)
         tags = instance.tag.all()
         tag_serializer = TagSerializer(tags, many=True)
+
         response_data = {
             'post': post_serializer.data,
             'comments': comment_serializer.data,
