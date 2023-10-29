@@ -20,7 +20,6 @@ class PersonalUserListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Фильтрация по текущему пользователю
         return CustomUser.objects.filter(id=self.request.user.id)
 
 
