@@ -5,13 +5,16 @@ from souls_of_stockholm.user import services
 from souls_of_stockholm.user.forms import RegistrationForm
 from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib.auth import logout
+from souls_of_stockholm.posts.models import Posts
+
 class UserView(View):
     def get(self, request, *args, **kwargs):
         is_session_active = 'user_id' in request.session
         session_id = request.session.get('user_id')
         user_id = kwargs.get('id')
+        post = Posts.objects.filter(author=user_id)
         user = CustomUser.objects.get(id=user_id)
-        return render(request, 'user/profile.html', {'is_session_active': is_session_active, 'user': user, 'user_id': session_id})
+        return render(request, 'user/profile.html', {'is_session_active': is_session_active, 'user': user, 'user_id': session_id, 'posts':post })
 
 
 class CreateUserView(View):

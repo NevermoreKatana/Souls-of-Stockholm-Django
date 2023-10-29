@@ -57,14 +57,27 @@
                         <form action="{% url 'delete_user' id=user.id %}">
                              <button type="submit" class="btn btn-danger mx-3">Удалить</button>
                         </form>
-                        {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
+            </div>
+    </div>
+        <h2 style="text-align:center">Ваши посты</h2>
+    {% for p in posts %}
+        <div class="post">
+            <a href="{% url 'post' id=p.id %}" class="post-link">
+                <h2>{{p.name}}</h2>
+                <p class="ellipsis-text">{{p.content}}</p>
+                <a href="{% url 'update_post' pk=p.id %}">Изменить</a>
+                <a href="{% url 'delete_post' pk=p.id %}" class="ml-3">Удалить</a>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+        </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

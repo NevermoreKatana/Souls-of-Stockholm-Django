@@ -17,7 +17,7 @@
         <pre>{{posts.content}}</pre>
         <h4>
             <strong class="">
-            <a href="{% url 'profile' id=posts.author.id %}">{{posts.user.username}}</a>
+            <a href="{% url 'profile' id=posts.author.id %}">{{posts.author.username}}</a>
             </strong>
         </h4>
         {%if posts.tag.all%}
@@ -38,8 +38,6 @@
                         <img src="{% static 'images/main_bg.jpg' %}" alt="Фото пользователя">
                         <div class="dv1">
                             <strong>{{c.content}}</strong>
-                            <br>
-                            <a href="{% url 'profile' id=c.user.id %}">{{c.user.username}}</a>
                         </div>
                     </li>
                 {% endfor %}
