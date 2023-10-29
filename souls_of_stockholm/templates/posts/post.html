@@ -17,7 +17,7 @@
         <pre>{{posts.content}}</pre>
         <h4>
             <strong class="">
-            <a href="{% url 'profile' id=posts.user.id %}">{{posts.user.username}}</a>
+            <a href="{% url 'profile' id=posts.author.id %}">{{posts.user.username}}</a>
             </strong>
         </h4>
         {%if posts.tag.all%}

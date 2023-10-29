@@ -3,7 +3,6 @@ from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.user.models import CustomUser
 from souls_of_stockholm.posts.models import Tag
 
-
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

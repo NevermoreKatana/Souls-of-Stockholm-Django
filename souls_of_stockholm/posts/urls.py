@@ -19,5 +19,7 @@ from django.urls import path
 from souls_of_stockholm.posts import views
 urlpatterns = [
     path('create/', views.PostCreateView.as_view(), name='create_post'),
-    path('<int:id>/', views.PostView.as_view(), name='post')
+    path('<int:id>/', views.PostView.as_view(), name='post'),
+    path('delete/<int:pk>/', views.DeletePostView.as_view(), name='delete_post'),
+    path('update/<int:pk>/', views.UpdatePostView.as_view(), name='update_post')
 ]

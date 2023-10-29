@@ -6,7 +6,14 @@ from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib import messages
 from souls_of_stockholm.posts import services
 from souls_of_stockholm.posts.models import Tag
-class PostView(View):
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.shortcuts import reverse
+from souls_of_stockholm.posts.forms import PostForm
+from django.http import HttpResponseRedirect
+
+
+class PostView(ListView):
     def get(self, request, *args, **kwargs):
         post_id = kwargs.get('id')
         is_session_active = 'user_id' in request.session
@@ -22,17 +29,87 @@ class PostView(View):
             return handle_error(request, 'Чтобы писать комментарии пройдите аутентификацию', 'login')
         return services.add_comments(request, post_id)
 
-class PostCreateView(View):
 
-    def get(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
-        tags = Tag.objects.all()
-        if not is_session_active:
-            return handle_error(request, 'Чтобы создать пост пройдите аутентификацию', 'login')
-        user_id = request.session.get('user_id')
-        return render(request, 'posts/create.html', {'is_session_active': is_session_active, 'user_id': user_id, 'tags': tags})
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Posts
+    template_name = 'posts/create.html'
+    form_class = PostForm
+    login_url = 'login'
 
-    def post(self, request, *args, **kwargs):
-        return services.create_post(request)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, 'Задача успешно создана')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('main')
+
+    def handle_no_permission(self):
+        messages.error(self.request, 'Чтобы создать пост пройдите аутентификацию')
+        return super().handle_no_permission()
+
+
+class DeletePostView(DeleteView):
+    model = Posts
+    template_name = 'posts/delete.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != self.request.user:
+            messages.error(self.request, 'Вы не можете удалить данный пост')
+            return HttpResponseRedirect(reverse('main'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Пост успешно удален')
+        return reverse('main')
+
+class UpdatePostView(UpdateView):
+    model = Posts
+    template_name = 'posts/update.html'
+    form_class = PostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        post = Posts.objects.get(id=self.kwargs['pk'])
+        tag_ids = list(post.tag.values_list('id', flat=True))
+        initial_data = {
+            'name': post.name,
+            'content': post.content,
+            'tag': tag_ids,
+        }
+
+        kwargs['initial'] = initial_data
+        return kwargs
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.author != self.request.user:
+            messages.error(self.request, 'Вы не можете редактировать данный пост')
+            return HttpResponseRedirect(reverse('main'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Пост успешно обновлен')
+        return reverse('main')
 
 

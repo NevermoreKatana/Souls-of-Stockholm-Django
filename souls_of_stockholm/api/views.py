@@ -6,7 +6,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-
 class PostsListView(generics.ListCreateAPIView):
     queryset = Posts.objects.all()
     serializer_class = PostSerializer
