@@ -3,10 +3,12 @@ from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.user.models import CustomUser
 from souls_of_stockholm.posts.models import Tag
 
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('name',)
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
@@ -20,6 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'id': user.id,
             'username': user.username
         }
+
 
 class PostSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()

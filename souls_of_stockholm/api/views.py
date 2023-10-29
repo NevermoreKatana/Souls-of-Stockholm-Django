@@ -19,6 +19,10 @@ class PersonalUserListView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        # Фильтрация по текущему пользователю
+        return CustomUser.objects.filter(id=self.request.user.id)
+
 
 class ShowUserListView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
