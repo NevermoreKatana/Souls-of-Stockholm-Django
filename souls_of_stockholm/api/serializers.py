@@ -28,7 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "content", "user"]
 
     def get_user(self, obj):
-        user = obj.user
+        user = obj.author
         return {
             'id': user.id,
             'username': user.username
