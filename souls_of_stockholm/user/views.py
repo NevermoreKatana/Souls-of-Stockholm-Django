@@ -6,65 +6,107 @@ from souls_of_stockholm.user.forms import RegistrationForm
 from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib.auth import logout
 from souls_of_stockholm.posts.models import Posts
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.shortcuts import reverse
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 
-class UserView(View):
-    def get(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
-        session_id = request.session.get('user_id')
-        user_id = kwargs.get('id')
-        post = Posts.objects.filter(author=user_id)
-        user = CustomUser.objects.get(id=user_id)
-        return render(request, 'user/profile.html', {'is_session_active': is_session_active, 'user': user, 'user_id': session_id, 'posts':post })
+class UserView(ListView):
+    model = CustomUser
+    template_name = 'user/profile.html'
 
-
-class CreateUserView(View):
-
-    def get(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
-        user_id = request.session.get('user_id')
-        form = RegistrationForm()
-        return render(request, 'user/register.html', {'is_session_active': is_session_active, 'user_id': user_id, 'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = RegistrationForm(request.POST)
-        errors = services.create_user(request, CustomUser, form)
-        return errors
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = CustomUser.objects.get(id=self.kwargs['id'])
+        post = Posts.objects.filter(author=self.kwargs['id'])
+        context['posts'] = post
+        context['user'] = user
+        context['user_id'] = self.request.session.get('user_id')
+        context['is_session_active'] = 'user_id' in self.request.session
+        return context
 
 
-class UpdateUserView(View):
+class CreateUserView(CreateView):
+    model = CustomUser
+    template_name = 'user/register.html'
+    form_class = RegistrationForm
 
-    def get(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
-        user_session_id = request.session.get('user_id')
-        user_id = kwargs.get('id')
-        if services.check_user_perm(user_session_id, user_id):
-            initial_data = services.get_update_user_info(user_id)
-            form = RegistrationForm(initial_data)
-            return render(request, 'user/update.html', {'is_session_active': is_session_active, 'user_id': user_session_id, 'form': form})
-        return handle_error(request, 'У вас нет прав редактировать другого пользователя', 'main')
-    def post(self, request, *args, **kwargs):
-        user_id = request.session.get('user_id')
-        form = RegistrationForm(request.POST)
-        errors = services.update_user_info(form, request, user_id)
-        return errors
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
+
+    def form_valid(self, form):
+        password = form.cleaned_data['password']
+        password_confirm = form.cleaned_data['confirm_password']
+        errors = services.check_errors(password, password_confirm)
+        if errors:
+            messages.error(self.request, errors)
+            return self.form_invalid(form)
+
+        form.instance.password = make_password(password)
+        messages.success(self.request, 'Пользователь успешно зарегистрирован')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('login')
 
 
+class UpdateUserView(UpdateView):
+    model = CustomUser
+    template_name = 'user/update.html'
+    form_class = RegistrationForm
 
-class DeleteUserView(View):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
 
-    def get(self, request, *args, **kwargs):
-        is_session_active = 'user_id' in request.session
-        user_session_id = request.session.get('user_id')
-        user_id = kwargs.get('id')
-        user = CustomUser.objects.get(id=user_id)
-        if services.check_user_perm(user_session_id, user_id):
-            return render(request, 'user/delete.html',
-                          {'is_session_active': is_session_active, 'user_id': user_session_id, 'user': user})
-        return handle_error(request, 'У вас нет прав редактировать другого пользователя', 'main')
+    def form_valid(self, form):
+        password = form.cleaned_data['password']
+        password_confirm = form.cleaned_data['confirm_password']
+        errors = services.check_errors(password, password_confirm)
+        if errors:
+            messages.error(self.request, errors)
+            return self.form_invalid(form)
 
-    def post(self, request, *args, **kwargs):
-        user_id = kwargs.get('id')
-        user = CustomUser.objects.get(id=user_id)
-        user.delete()
-        logout(request)
-        return handle_success(request, 'Пользователь успешно удален', 'main')
+        form.instance.password = make_password(password)
+        messages.success(self.request, 'Пользователь успешно обновлен')
+        return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_object()
+        if user.id != self.request.session.get('user_id'):
+            messages.error(self.request, 'Вы не можете редактировать данного юзера')
+            return HttpResponseRedirect(reverse('main'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        user_id = self.request.session.get('user_id')
+        return reverse('profile', kwargs={'id': user_id})
+
+class DeleteUserView(DeleteView):
+    model = CustomUser
+    template_name = 'user/delete.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_session_active'] = 'user_id' in self.request.session
+        context['user_id'] = self.request.session.get('user_id')
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_object()
+        if user.id != self.request.session.get('user_id'):
+            messages.error(self.request, 'Вы не можете редактировать данного юзера')
+            return HttpResponseRedirect(reverse('main'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Пользователь успешно удален')
+        logout(self.request)
+        return reverse('main')

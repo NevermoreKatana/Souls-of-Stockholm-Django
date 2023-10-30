@@ -8,11 +8,11 @@ from django.contrib.auth import logout
 
 
 
-def check_errors(password1, password2, request):
+def check_errors(password1, password2):
     if not check_password(password1, password2):
-        return handle_error(request,'Пароли не совпадают', 'register')
+        return 'Пароли не совпадают'
     elif not check_len_password(password1):
-        return handle_error(request, 'Пароль слишком короткий', 'register')
+        return 'Пароль слишком короткий'
 
 
 def create_user(request, model, form):
