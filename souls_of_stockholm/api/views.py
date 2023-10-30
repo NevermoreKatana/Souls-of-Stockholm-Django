@@ -55,7 +55,8 @@ class OnePostListView(generics.RetrieveAPIView):
         return Response(response_data)
 
 
-class CommentListCreateView(generics.ListCreateAPIView):
+class CommentListCreateView(generics.CreateAPIView):
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
