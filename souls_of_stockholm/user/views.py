@@ -8,6 +8,8 @@ from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+from souls_of_stockholm.user.jwt import generate_tokens
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class UserView(ListView):
@@ -36,6 +38,13 @@ class CreateUserView(CreateView):
         context['user_id'] = self.request.session.get('user_id')
         return context
 
+    def generate_tokens(self, user):
+        refresh = RefreshToken.for_user(user)
+        token = {
+            'access': str(refresh.access_token)
+        }
+        return token['access']
+
     def form_valid(self, form):
         password = form.cleaned_data['password']
         password_confirm = form.cleaned_data['confirm_password']
@@ -44,6 +53,8 @@ class CreateUserView(CreateView):
             messages.error(self.request, errors)
             return self.form_invalid(form)
 
+        jwt = self.generate_tokens(form.instance)
+        form.instance.jwt = jwt
         form.instance.password = make_password(password)
         messages.success(self.request, 'Пользователь успешно зарегистрирован')
         return super().form_valid(form)
