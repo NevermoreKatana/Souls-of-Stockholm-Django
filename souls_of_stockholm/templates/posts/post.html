@@ -38,6 +38,8 @@
                         <img src="{% static 'images/main_bg.jpg' %}" alt="Фото пользователя">
                         <div class="dv1">
                             <strong>{{c.content}}</strong>
+                            <br>
+                            <a href="{% url 'profile' id=c.user.id %}">{{c.user.username}}</a>
                         </div>
                     </li>
                 {% endfor %}
