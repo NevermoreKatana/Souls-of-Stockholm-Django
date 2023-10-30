@@ -9,7 +9,7 @@ class Tag(models.Model):
 class Posts(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag, blank=True, null=True)
     content = models.TextField(max_length=8000)
 
 
