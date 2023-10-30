@@ -1,7 +1,6 @@
 from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.user.models import CustomUser
 from django.shortcuts import redirect
-from souls_of_stockholm.posts.models import Tag
 
 
 def add_comments(request, post_id):
