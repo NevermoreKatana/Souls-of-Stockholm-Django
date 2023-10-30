@@ -15,18 +15,3 @@ def add_comments(request, post_id):
     comment.content = coment
     comment.save()
     return redirect(request.get_full_path())
-
-
-def create_post(request):
-    post_name = request.POST.get('name')
-    content = request.POST.get('content')
-    tags = request.POST.getlist('tags')
-    post = Posts()
-    post.content = content
-    post.name = post_name
-    post.user = CustomUser.objects.get(id=request.session.get('user_id'))
-    post.save()
-    for tags_id in tags:
-        tag = Tag.objects.get(id=tags_id)
-        post.tag.add(tag)
-    return redirect('main')
