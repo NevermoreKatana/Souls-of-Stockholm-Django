@@ -10,6 +10,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('post/<int:id>/', views.OnePostListView.as_view(), name='one_post'),
-    path('post/<int:id>/comment/add', views.CommentListCreateView.as_view(), name='add_comment'),
+    path('post/comment/add', views.CommentListCreateView.as_view(), name='add_comment'),
     path('user/<int:id>/', views.ShowUserListView.as_view(), name='user'),
 ]
