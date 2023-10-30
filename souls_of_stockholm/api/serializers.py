@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comments
-        fields = ["id", "user", "content", "create_at"]
+        fields = ["id", "user", "content", "create_at", "is_staff", "is_superuser"]
 
     def get_user(self, obj):
         user = obj.user
