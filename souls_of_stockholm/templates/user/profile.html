@@ -30,6 +30,7 @@
                 <div class="card">
                     <img src="{% static 'images/main_bg.jpg' %}" class="card-img-top" alt="User Image">
                     <div class="card-body text-center">
+                        <h5 style="color: red">{% if user.is_superuser %}CCG{% endif %}</h5>
                         <h5 style="color: red">{% if user.is_superuser %}Developer{% endif %}</h5>
                         <h5 class="card-title">{{user.username}}</h5>
                         <p class="card-text">{{user.country}}</p>
