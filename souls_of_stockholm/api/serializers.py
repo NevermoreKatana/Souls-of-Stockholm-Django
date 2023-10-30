@@ -12,6 +12,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+
     class Meta:
         model = Comments
         fields = ["id", "user", "content", "create_at"]
@@ -26,6 +27,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+
     class Meta:
         model = Posts
         fields = ["id", "name", "content", "user"]
@@ -48,4 +50,3 @@ class AnyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'age', 'gender', 'country']
-

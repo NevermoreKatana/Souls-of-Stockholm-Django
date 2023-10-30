@@ -1,6 +1,7 @@
 from django import forms
 from souls_of_stockholm.posts.models import Posts, Tag
 
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Posts
@@ -10,8 +11,8 @@ class PostForm(forms.ModelForm):
                                            'placeholder': 'Название поста'}),
             'content': forms.Textarea(attrs={'class': 'form-control'}),
             'tag': forms.SelectMultiple(attrs={'class': 'form-control',
-                                                  'multiple': 'multiple',
-                                                  'required': False}),
+                                               'multiple': 'multiple',
+                                               'required': False}),
         }
         labels = {
             'name': 'Название поста',
@@ -20,6 +21,5 @@ class PostForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        initial = kwargs.get('initial', {})
         super(PostForm, self).__init__(*args, **kwargs)
         self.fields['tag'].choices = [(label.id, label.name) for label in Tag.objects.all()]

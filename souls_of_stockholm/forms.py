@@ -1,5 +1,4 @@
 from django import forms
-from souls_of_stockholm.user.models import CustomUser
 
 
 class CustomUserForm(forms.Form):
@@ -8,8 +7,8 @@ class CustomUserForm(forms.Form):
         label_suffix='',
         max_length=150,
         widget=forms.TextInput(attrs={'class': 'form-control',
-                                     'placeholder': 'Имя пользователя',
-                                     'required': 'required'})
+                                      'placeholder': 'Имя пользователя',
+                                      'required': 'required'})
     )
     password = forms.CharField(
         label='Пароль',
@@ -20,4 +19,3 @@ class CustomUserForm(forms.Form):
                                           'required': 'required'
                                           })
     )
-

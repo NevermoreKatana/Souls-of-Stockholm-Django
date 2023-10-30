@@ -1,7 +1,11 @@
 from rest_framework import generics
 from souls_of_stockholm.posts.models import Posts, Comments
 from souls_of_stockholm.user.models import CustomUser
-from souls_of_stockholm.api.serializers import PostSerializer, UserSerializer, CommentSerializer, AnyUserSerializer, TagSerializer
+from souls_of_stockholm.api.serializers import (PostSerializer,
+                                                UserSerializer,
+                                                CommentSerializer,
+                                                AnyUserSerializer,
+                                                TagSerializer)
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response

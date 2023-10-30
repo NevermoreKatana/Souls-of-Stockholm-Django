@@ -45,8 +45,7 @@ class RegistrationForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        initial = kwargs.get('initial', {})
         super(RegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['gender'].widget.choices = [('male', "Мужской"), ('female', "Женский"), ('other', "Другой")]
-
-
+        self.fields['gender'].widget.choices = [('male', "Мужской"),
+                                                ('female', "Женский"),
+                                                ('other', "Другой")]

@@ -1,9 +1,6 @@
-from django.shortcuts import render, redirect
-from django.views import View
 from souls_of_stockholm.user.models import CustomUser
 from souls_of_stockholm.user import services
 from souls_of_stockholm.user.forms import RegistrationForm
-from souls_of_stockholm.services import handle_error, handle_success
 from django.contrib.auth import logout
 from souls_of_stockholm.posts.models import Posts
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
@@ -11,6 +8,7 @@ from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+
 
 class UserView(ListView):
     model = CustomUser
@@ -87,6 +85,7 @@ class UpdateUserView(UpdateView):
     def get_success_url(self):
         user_id = self.request.session.get('user_id')
         return reverse('profile', kwargs={'id': user_id})
+
 
 class DeleteUserView(DeleteView):
     model = CustomUser

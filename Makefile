@@ -17,4 +17,4 @@ migration:
 	poetry run python manage.py migrate
 
 make lint:
-	poetry run flake8 task_manager
+	poetry run flake8 souls_of_stockholm

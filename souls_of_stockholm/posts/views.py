@@ -1,11 +1,8 @@
-from django.shortcuts import render, redirect
-from django.views import View
-from souls_of_stockholm.user.models import CustomUser
+from django.shortcuts import render
 from souls_of_stockholm.posts.models import Posts, Comments
-from souls_of_stockholm.services import handle_error, handle_success
+from souls_of_stockholm.services import handle_error
 from django.contrib import messages
 from souls_of_stockholm.posts import services
-from souls_of_stockholm.posts.models import Tag
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.shortcuts import reverse
@@ -20,13 +17,17 @@ class PostView(ListView):
         posts = Posts.objects.get(id=post_id)
         user_id = request.session.get('user_id')
         comments = Comments.objects.filter(post__id=post_id)
-        return render(request, 'posts/post.html', {'is_session_active': is_session_active, 'posts': posts, 'user_id': user_id, 'comments': comments})
+        return render(request, 'posts/post.html', {'is_session_active': is_session_active,
+                                                   'posts': posts,
+                                                   'user_id': user_id,
+                                                   'comments': comments})
 
     def post(self, request, *args, **kwargs):
         is_session_active = 'user_id' in request.session
         post_id = kwargs.get('id')
         if not is_session_active:
-            return handle_error(request, 'Чтобы писать комментарии пройдите аутентификацию', 'login')
+            return handle_error(request, 'Чтобы писать комментарии пройдите аутентификацию',
+                                'login')
         return services.add_comments(request, post_id)
 
 
@@ -77,6 +78,7 @@ class DeletePostView(DeleteView):
         messages.success(self.request, 'Пост успешно удален')
         return reverse('main')
 
+
 class UpdatePostView(UpdateView):
     model = Posts
     template_name = 'posts/update.html'
@@ -111,5 +113,3 @@ class UpdatePostView(UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Пост успешно обновлен')
         return reverse('main')
-
-

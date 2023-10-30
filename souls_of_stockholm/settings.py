@@ -88,14 +88,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'souls_of_stockholm.wsgi.application'
 
 
-#JWT token settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
-
+"""
+JWT SETTINGS
+"""
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=36500),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=36500),

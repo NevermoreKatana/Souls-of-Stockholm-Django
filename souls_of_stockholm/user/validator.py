@@ -5,6 +5,6 @@ def check_password(passwd1, passwd2):
 
 
 def check_len_password(passwd):
-    if len(passwd)<8:
+    if len(passwd) < 8:
         return False
     return True
