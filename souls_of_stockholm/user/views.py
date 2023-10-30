@@ -8,7 +8,6 @@ from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from souls_of_stockholm.user.jwt import generate_tokens
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
