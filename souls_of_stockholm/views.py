@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import logout
-from souls_of_stockholm.posts.models import Posts, Tag
+from souls_of_stockholm.posts.models import Posts
 from souls_of_stockholm import services
 from souls_of_stockholm.forms import CustomUserForm
 
@@ -44,5 +44,3 @@ class LogoutView(View):
     def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('main')
-
-

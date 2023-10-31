@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from souls_of_stockholm.forums import views
 
 urlpatterns = [
