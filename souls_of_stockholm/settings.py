@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'souls_of_stockholm.api',
     'rest_framework',
     'rest_framework_simplejwt',
+    'souls_of_stockholm.forums'
 
 ]
 

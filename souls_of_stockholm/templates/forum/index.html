@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Souls of Stockholm</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main_page.css' %}">
+</head>
+{% include 'navigation.html' %}
+{% if messages %}
+    {% for message in messages %}
+        {% if "error" in message.tags %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ message }}
+            </div>
+        {% elif "success" in message.tags %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">{{ message }}
+            </div>
+        </ul>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 justify-content-center ">
+                 <div>
+                    <form action="{% url 'create_post' %}" method="get" style="text-align: center">
+                        <button class="btn btn1">Создать пост</button>
+                    </div>
+                {% for tag in tags %}
+                <div class="tg">
+                    <a href="{% url 'forum_tag_filer' id=tag.id %}" class="tg-link">
+                    <h2 style="font-size: 20px">{{tag.name}}</h2>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-9">
+                    {% for p in posts %}
+                    <div class="post">
+                        <a href="{% url 'post' id=p.id %}" class="post-link">
+                            <h2>{{p.name}}</h2>
+                            <p class="ellipsis-text">{{p.content}}</p>
+                            <a href="{% url 'update_post' pk=p.id %}">Изменить</a>
+                            <a href="{% url 'delete_post' pk=p.id %}" class="ml-3">Удалить</a>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

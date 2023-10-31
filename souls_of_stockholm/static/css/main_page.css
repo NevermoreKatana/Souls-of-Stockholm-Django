@@ -48,3 +48,27 @@ pre{
 li {
     color: white;
 }
+
+.tg {
+
+    background-color: #1c1c1c;
+    padding: 10px;
+    margin: 15px 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+    text-align: center;
+}
+.tg:hover {
+    background-color: #1c1c1c;
+}
+.tg-link {
+    text-decoration: none;
+    color: inherit;
+
+}
+.tg-link:hover,
+.tg-link:active {
+    text-decoration: none;
+    color: #848484;
+}

@@ -28,24 +28,36 @@
 
         <h1>Добро пожаловать на Souls of Stockholm</h1>
         <p>Здесь не салам, здесь здравствуйте!</p>
-        <div>
-            <form action="{% url 'create_post' %}" method="get" class="d-flex justify-content-center">
-                <button class="btn btn1">Создать пост</button>
-        </div>
-         {% for p in posts %}
+<!--        <div>-->
+<!--            <form action="{% url 'create_post' %}" method="get" class="d-flex justify-content-center">-->
+<!--                <button class="btn btn1">Создать пост</button>-->
+<!--        </div>-->
+
         <div class="post">
-            <a href="{% url 'post' id=p.id %}" class="post-link">
-                <h2>{{p.name}}</h2>
-                <p class="ellipsis-text">{{p.content}}</p>
-                <a href="{% url 'update_post' pk=p.id %}">Изменить</a>
-                <a href="{% url 'delete_post' pk=p.id %}" class="ml-3">Удалить</a>
-            </a>
+                <h2>Отдай свою Душу</h2>
+                <p class="ellipsis-text">В невермор</p>
         </div>
-        {% endfor %}
+        <div class="post">
+                <h2>Прекрати думать, что всё под твои контролем</h2>
+                <p class="ellipsis-text">Твоя душа захвачена</p>
+        </div>
+        <div class="post">
+                <h2>В раю намного мягче климат</h2>
+                <p class="ellipsis-text">но лучше общество в аду.</p>
+        </div>
+        <div class="post">
+                <h2>У каждого свой ад — это не обязательно огонь и смола!</h2>
+                <p class="ellipsis-text">Наш ад — это жизнь впустую!</p>
+        </div>
+        <div class="post">
+                <h2>О-о-о Неверомор!</h2>
+                <p class="ellipsis-text">Твоя душа принадлежит мне!</p>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% include 'footer.html' %}
 </body>
 </html>

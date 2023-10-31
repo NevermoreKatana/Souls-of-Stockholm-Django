@@ -45,11 +45,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        messages.success(self.request, 'Задача успешно создана')
+        messages.success(self.request, 'Пост успешно создан')
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('main')
+        return reverse('forums_index')
 
     def handle_no_permission(self):
         messages.error(self.request, 'Чтобы создать пост пройдите аутентификацию')
@@ -71,12 +71,12 @@ class DeletePostView(DeleteView):
         post = self.get_object()
         if post.author != self.request.user:
             messages.error(self.request, 'Вы не можете удалить данный пост')
-            return HttpResponseRedirect(reverse('main'))
+            return HttpResponseRedirect(reverse('forums_index'))
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         messages.success(self.request, 'Пост успешно удален')
-        return reverse('main')
+        return reverse('forums_index')
 
 
 class UpdatePostView(UpdateView):
@@ -107,9 +107,9 @@ class UpdatePostView(UpdateView):
         post = self.get_object()
         if post.author != self.request.user:
             messages.error(self.request, 'Вы не можете редактировать данный пост')
-            return HttpResponseRedirect(reverse('main'))
+            return HttpResponseRedirect(reverse('forums_index'))
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         messages.success(self.request, 'Пост успешно обновлен')
-        return reverse('main')
+        return reverse('forums_index')
