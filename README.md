@@ -24,13 +24,31 @@ make start
 ```sh
 make dev
 ```
+## Заполнение .env
+```sh
+SECRET_KEY= Секретный ключ для сервера(можно сделать с помощью make secretkey)
+POSTGRES_DB= Имя БД для запуска Docker контейнера postgres
+POSTGRES_USER= Имя пользователя для запуска Docker контейнера postgres
+POSTGRES_PASSWORD= Пароль пользователя для запуска Docker контейнера postgres
+DB_URL= Ссылка на URL базы данных
+DEBUG=True\False в зависимости от среды разработка\Деплой
+```
+## Запуск контейнера(для разработки)
+```sh
+make docker-build
+```
+## Быстрое выполнение миграций 
+```sh
+make migration
+```
+
 
 ## Результат можно посмотреть
 
 [Souls of Stockholm](https://souls-of-stockholm.onrender.com/)
 
 ## Репозиторий мобильной части 
-- Тут когда-то будет TgBot
+- Тут когда-то будет Android App
 
 
 ## Authors
