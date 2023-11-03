@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-
+from souls_of_stockholm.mixins import GetSuccessUrlMixin
 
 class UserView(ListView):
     model = get_user_model()
@@ -27,10 +27,12 @@ class UserView(ListView):
         return context
 
 
-class CreateUserView(CreateView):
+class CreateUserView(CreateView, GetSuccessUrlMixin):
     model = get_user_model()
     template_name = 'user/register.html'
     form_class = RegistrationForm
+    success_message = ''
+    success_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -59,14 +61,13 @@ class CreateUserView(CreateView):
         messages.success(self.request, 'Пользователь успешно зарегистрирован')
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse('login')
 
-
-class UpdateUserView(UpdateView):
+class UpdateUserView(UpdateView, GetSuccessUrlMixin):
     model = get_user_model()
     template_name = 'user/update.html'
     form_class = RegistrationForm
+    success_message = ''
+    success_url = 'main'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,15 +94,13 @@ class UpdateUserView(UpdateView):
             return HttpResponseRedirect(reverse('main'))
         return super().dispatch(request, *args, **kwargs)
 
-    def get_success_url(self):
-        user_id = self.request.session.get('user_id')
-        return reverse('profile', kwargs={'id': user_id})
 
-
-class DeleteUserView(DeleteView):
+class DeleteUserView(DeleteView, GetSuccessUrlMixin):
     model = get_user_model()
     template_name = 'user/delete.html'
     context_object_name = 'user'
+    success_message = 'Пользователь успешно удален'
+    success_url = 'main'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,8 +114,3 @@ class DeleteUserView(DeleteView):
             messages.error(self.request, 'Вы не можете редактировать данного юзера')
             return HttpResponseRedirect(reverse('main'))
         return super().dispatch(request, *args, **kwargs)
-
-    def get_success_url(self):
-        messages.success(self.request, 'Пользователь успешно удален')
-        logout(self.request)
-        return reverse('main')
