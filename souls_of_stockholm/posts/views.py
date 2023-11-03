@@ -8,6 +8,7 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.shortcuts import reverse
 from souls_of_stockholm.posts.forms import PostForm
 from django.http import HttpResponseRedirect
+from souls_of_stockholm.mixins import GetSuccessUrlMixin
 
 
 class PostView(ListView):
@@ -31,11 +32,14 @@ class PostView(ListView):
         return services.add_comments(request, post_id)
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, GetSuccessUrlMixin, CreateView):
     model = Posts
     template_name = 'posts/create.html'
     form_class = PostForm
     login_url = 'login'
+    success_message = ''
+    success_url = 'forums_index'
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,18 +52,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Пост успешно создан')
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse('forums_index')
-
     def handle_no_permission(self):
         messages.error(self.request, 'Чтобы создать пост пройдите аутентификацию')
         return super().handle_no_permission()
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(DeleteView, GetSuccessUrlMixin):
     model = Posts
     template_name = 'posts/delete.html'
     context_object_name = 'post'
+    success_message = 'Пост успешно удален'
+    success_url = 'forums_index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,15 +77,13 @@ class DeletePostView(DeleteView):
             return HttpResponseRedirect(reverse('forums_index'))
         return super().dispatch(request, *args, **kwargs)
 
-    def get_success_url(self):
-        messages.success(self.request, 'Пост успешно удален')
-        return reverse('forums_index')
 
-
-class UpdatePostView(UpdateView):
+class UpdatePostView(UpdateView, GetSuccessUrlMixin):
     model = Posts
     template_name = 'posts/update.html'
     form_class = PostForm
+    success_message = 'Пост успешно обновлен'
+    success_url = 'forums_index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,7 +110,3 @@ class UpdatePostView(UpdateView):
             messages.error(self.request, 'Вы не можете редактировать данный пост')
             return HttpResponseRedirect(reverse('forums_index'))
         return super().dispatch(request, *args, **kwargs)
-
-    def get_success_url(self):
-        messages.success(self.request, 'Пост успешно обновлен')
-        return reverse('forums_index')

@@ -9,10 +9,11 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model
 
 
 class UserView(ListView):
-    model = CustomUser
+    model = get_user_model()
     template_name = 'user/profile.html'
 
     def get_context_data(self, **kwargs):
@@ -27,7 +28,7 @@ class UserView(ListView):
 
 
 class CreateUserView(CreateView):
-    model = CustomUser
+    model = get_user_model()
     template_name = 'user/register.html'
     form_class = RegistrationForm
 
@@ -63,7 +64,7 @@ class CreateUserView(CreateView):
 
 
 class UpdateUserView(UpdateView):
-    model = CustomUser
+    model = get_user_model()
     template_name = 'user/update.html'
     form_class = RegistrationForm
 
@@ -98,7 +99,7 @@ class UpdateUserView(UpdateView):
 
 
 class DeleteUserView(DeleteView):
-    model = CustomUser
+    model = get_user_model()
     template_name = 'user/delete.html'
     context_object_name = 'user'
 
