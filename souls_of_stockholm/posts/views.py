@@ -40,16 +40,18 @@ class PostCreateView(LoginRequiredMixin, GetSuccessUrlMixin, CreateView):
     success_message = ''
     success_url = 'forums_index'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_session_active'] = 'user_id' in self.request.session
         context['user_id'] = self.request.session.get('user_id')
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form, *args, **kwargs):
         form.instance.author = self.request.user
         messages.success(self.request, 'Пост успешно создан')
+        super().form_valid(form)
+        gpt_answer = services.gpt_answer(form)
+        services.add_gpt_answer_comment('Я пока что не работаю((((', form)
         return super().form_valid(form)
 
     def handle_no_permission(self):
