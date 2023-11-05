@@ -6,16 +6,16 @@ from souls_of_stockholm.api.serializers import (PostSerializer,
                                                 AddCommentSerializer,
                                                 AnyUserSerializer,
                                                 TagSerializer,
-                                                CommentSerializer)
+                                                CommentSerializer,
+                                                AddPostSerializer)
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 
-class PostsListView(generics.ListCreateAPIView):
+class PostsListView(generics.ListAPIView):
     queryset = Posts.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PersonalUserListView(generics.ListAPIView):
@@ -61,3 +61,11 @@ class CommentCreateView(generics.CreateAPIView):
     serializer_class = AddCommentSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+
+class PostCreateView(generics.CreateAPIView):
+    queryset = Posts.objects.all()
+    serializer_class = AddPostSerializer
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+

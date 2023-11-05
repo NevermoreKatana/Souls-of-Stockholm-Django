@@ -64,7 +64,7 @@ class DeletePostView(DeleteView, GetSuccessUrlMixin):
     template_name = 'posts/delete.html'
     context_object_name = 'post'
     success_message = 'Пост успешно удален'
-    success_url = 'forums_index'
+    success_url = '/forums/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
