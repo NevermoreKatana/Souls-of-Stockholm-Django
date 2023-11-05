@@ -66,6 +66,6 @@ class CommentCreateView(generics.CreateAPIView):
 class PostCreateView(generics.CreateAPIView):
     queryset = Posts.objects.all()
     serializer_class = AddPostSerializer
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
