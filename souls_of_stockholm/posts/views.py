@@ -85,7 +85,7 @@ class UpdatePostView(UpdateView, GetSuccessUrlMixin):
     template_name = 'posts/update.html'
     form_class = PostForm
     success_message = 'Пост успешно обновлен'
-    success_url = 'forums_index'
+    success_url = '/forums/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
