@@ -5,7 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Souls of Stockholm</title>
-
+    <link rel="manifest" href="/manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('static/souls_of_stockholm/js/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
+    </script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/main_page.css' %}"  >
 </head>
@@ -28,10 +39,6 @@
 
         <h1>Добро пожаловать на Souls of Stockholm</h1>
         <p>Здесь не салам, здесь здравствуйте!</p>
-<!--        <div>-->
-<!--            <form action="{% url 'create_post' %}" method="get" class="d-flex justify-content-center">-->
-<!--                <button class="btn btn1">Создать пост</button>-->
-<!--        </div>-->
 
         <div class="post">
                 <h2>Отдай свою Душу</h2>
