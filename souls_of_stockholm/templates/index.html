@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Souls of Stockholm</title>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{% static 'js/manifest.json' %}">
     <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('static/souls_of_stockholm/js/service-worker.js')
+        navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
           .then((registration) => {
             console.log('Service Worker registered with scope:', registration.scope);
           })
@@ -35,6 +35,9 @@
         {% endif %}
 
 <body>
+<a href="{% static 'js/service-worker.js' %}" download="service-worker.js">
+                        <button>Скачать Service Worker</button>
+                    </a>
     <div class="container mt-4">
 
         <h1>Добро пожаловать на Souls of Stockholm</h1>
